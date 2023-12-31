@@ -30,10 +30,16 @@ const calculate_gpa = () => {
     if (result_records.length > 0){
         let total_credits = 0
         let prod_credit_results = 0
-        result_records.forEach((x) => {
-            credit = parseInt(x.innerText.split("\t")[3])
-            result = return_result_gpa(x.innerText.split("\t")[4])
-            if (credit === 0 || isNaN(credit) || result === -1 ) {
+        result_records.forEach((row) => {
+            credit = parseInt(row.innerText.split("\t")[3])
+            result = return_result_gpa(row.innerText.split("\t")[4])
+            included_in_gpa = row.innerText.split("\t")[5]
+            is_included_in_gpa = true
+            if(!isNaN(included_in_gpa)){
+                checkbox = row.querySelectorAll('input')
+                is_included_in_gpa = checkbox[0].checked
+            }
+            if (credit === 0 || isNaN(credit) || result === -1 || !is_included_in_gpa) {
                 return;
             }
             total_credits += credit
@@ -41,28 +47,67 @@ const calculate_gpa = () => {
         });
         GPA = prod_credit_results/total_credits
         GPA = GPA.toFixed(4)
-        // Create a new h1 element
-        var gpah5Element = document.createElement('h5');
-        var gpastrongElement = document.createElement('strong');
-        gpastrongElement.textContent = `GPA : ${GPA}`;
-        gpah5Element.appendChild(gpastrongElement)
-
-        // Get the parent div by its id
-        var primaryTag = document.getElementById('primary');
-        let gpaInsertLocation = 4
-
-        // Check if the div exists
-        if (primaryTag) {
-            // Check if the div already has at least 3 children
-            if (primaryTag.children.length >= gpaInsertLocation) {
-                // Insert the h1 element as the 4th child
-                primaryTag.insertBefore(gpah5Element, primaryTag.children[gpaInsertLocation]);
-            } else {
-                console.error("The div doesn't have enough children.");
-            }
-        } else {
+        gpa_element = document.getElementById('gpa')
+        if(gpa_element){
+            gpa_element.textContent = `GPA : ${GPA}`;
+        }else{
             alert(`GPA : ${GPA}`);
         }
     }
 }
+
+const modify_page = () => {
+
+    GPA = null
+
+    var gpah5Element = document.createElement('h5');
+    var gpastrongElement = document.createElement('strong');
+    gpastrongElement.id = 'gpa'
+    gpastrongElement.textContent = `GPA : ${GPA}`;
+    gpah5Element.appendChild(gpastrongElement)
+
+
+    var primaryTag = document.getElementById('primary');
+    let gpaInsertLocation = 4
+
+    if (primaryTag) {
+        if (primaryTag.children.length >= gpaInsertLocation) {
+            primaryTag.insertBefore(gpah5Element, primaryTag.children[gpaInsertLocation]);
+        } else {
+            console.error("The div doesn't have enough children.");
+        }
+    } else {
+        alert(`GPA : ${GPA}`);
+    }
+
+    tables = Array.from(document.getElementsByTagName("table"))
+    if (tables.length > 2){
+        for(i = 2; i < tables.length; i++){
+            rows = tables[i].querySelectorAll('tr')
+            rows.forEach((row) => {
+                credit = row.innerText.split("\t")[3]
+                if (credit.toLowerCase() === 'credits'){
+                    var checkboxCell = document.createElement('th');
+                    checkboxCell.textContent = 'Included in GPA'
+                }else{
+                    var checkboxCell = document.createElement('td');
+                    var checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.checked = true;
+                    checkbox.addEventListener('change', function () {
+                        calculate_gpa()
+                      });
+            
+                    checkboxCell.appendChild(checkbox);
+            
+                }
+                row.appendChild(checkboxCell);
+            });
+        }
+    }
+    
+}
+
+modify_page()
 calculate_gpa()
+
