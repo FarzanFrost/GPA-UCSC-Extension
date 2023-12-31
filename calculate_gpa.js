@@ -38,8 +38,31 @@ const calculate_gpa = () => {
             }
             total_credits += credit
             prod_credit_results += credit * result
-        }); 
-        alert(`GPA : ${prod_credit_results/total_credits}`);
+        });
+        GPA = prod_credit_results/total_credits
+        GPA = GPA.toFixed(4)
+        // Create a new h1 element
+        var gpah5Element = document.createElement('h5');
+        var gpastrongElement = document.createElement('strong');
+        gpastrongElement.textContent = `GPA : ${GPA}`;
+        gpah5Element.appendChild(gpastrongElement)
+
+        // Get the parent div by its id
+        var primaryTag = document.getElementById('primary');
+        let gpaInsertLocation = 4
+
+        // Check if the div exists
+        if (primaryTag) {
+            // Check if the div already has at least 3 children
+            if (primaryTag.children.length >= gpaInsertLocation) {
+                // Insert the h1 element as the 4th child
+                primaryTag.insertBefore(gpah5Element, primaryTag.children[gpaInsertLocation]);
+            } else {
+                console.error("The div doesn't have enough children.");
+            }
+        } else {
+            alert(`GPA : ${GPA}`);
+        }
     }
 }
 calculate_gpa()
