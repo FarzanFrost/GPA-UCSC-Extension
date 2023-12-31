@@ -6,3 +6,4 @@
 - Step 5 : Click on the project folder (from inside folder x select 'GPA-UCSC-Extension' folder)
 - Step 6 : Click 'Select Folder'
 - Step 7 : visit https://ucsc.cmb.ac.lk/exam_results/ and login.
+- Step 8 : Applicable only for 3rd, and 4th year students. Uncheck the checkbox if you want to exclude any optional subjects from being included in to the GPA.
