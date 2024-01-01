@@ -56,7 +56,13 @@ const calculate_gpa = () => {
     }
 }
 
-const modify_page = () => {
+
+const get_tables = () => {
+    return Array.from(document.getElementsByTagName("table"))
+}
+
+
+const modify_page = (tables) => {
 
     GPA = null
 
@@ -73,6 +79,7 @@ const modify_page = () => {
     if (primaryTag) {
         if (primaryTag.children.length >= gpaInsertLocation) {
             primaryTag.insertBefore(gpah5Element, primaryTag.children[gpaInsertLocation]);
+            gpah5Element.className = primaryTag.children[gpaInsertLocation].className
         } else {
             console.error("The div doesn't have enough children.");
         }
@@ -80,34 +87,48 @@ const modify_page = () => {
         alert(`GPA : ${GPA}`);
     }
 
-    tables = Array.from(document.getElementsByTagName("table"))
     if (tables.length > 2){
         for(i = 2; i < tables.length; i++){
             rows = tables[i].querySelectorAll('tr')
             rows.forEach((row) => {
                 credit = row.innerText.split("\t")[3]
                 if (credit.toLowerCase() === 'credits'){
+                    th = row.querySelectorAll('th')[0]
                     var checkboxCell = document.createElement('th');
+                    checkboxCell.className = th.className
                     checkboxCell.textContent = 'Included in GPA'
+                    row.appendChild(checkboxCell);
                 }else{
+                    var checkboxDiv = document.createElement('div')
+                    checkboxDiv.className = "form-check form-switch"
+                    td = row.querySelectorAll('td')[0]
                     var checkboxCell = document.createElement('td');
+                    checkboxCell.className = td.className
                     var checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.checked = true;
                     checkbox.addEventListener('change', function () {
                         calculate_gpa()
-                      });
-            
-                    checkboxCell.appendChild(checkbox);
+                    });
+                    checkbox.className = "form-check-input"
+                    checkboxDiv.appendChild(checkbox)
+                    checkboxCell.appendChild(checkboxDiv);
+                    row.appendChild(checkboxCell);
             
                 }
-                row.appendChild(checkboxCell);
             });
         }
     }
     
 }
 
-modify_page()
-calculate_gpa()
+
+const check_if_correct_page = () =>{
+    tables = get_tables()
+    if (tables.length > 0){
+        modify_page(tables)
+        calculate_gpa()
+    }
+}
+check_if_correct_page()
 
