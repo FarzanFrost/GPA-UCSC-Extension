@@ -25,6 +25,8 @@ const return_result_gpa = (result) => {
         return -1;
     }
 }
+
+
 const calculate_gpa = () => {
     result_records = Array.from(document.getElementsByTagName("tr"))
     if (result_records.length > 0){
@@ -46,13 +48,30 @@ const calculate_gpa = () => {
             prod_credit_results += credit * result
         });
         GPA = prod_credit_results/total_credits
+        gpa_class = get_class(GPA)
         GPA = GPA.toFixed(4)
         gpa_element = document.getElementById('gpa')
+        gpa_class_element = document.getElementById('gpa_class')
         if(gpa_element){
             gpa_element.textContent = `GPA : ${GPA}`;
+            if(gpa_class !== undefined) gpa_class_element.textContent = `Class : ${gpa_class}`
+            else gpa_class_element.textContent = ''
         }else{
-            alert(`GPA : ${GPA}`);
+            alert(`GPA : ${GPA}\nClass : ${gpa_class}`);
         }
+    }
+}
+
+
+const get_class = (GPA) => {
+    if (GPA >= 3.7){
+        return 'First Class'
+    }else if(GPA >= 3.3){
+        return 'Second Class (Upper Division)'
+    }else if (GPA >= 3){
+        return 'Second Class (Lower Division)'
+    }else{
+        return
     }
 }
 
@@ -65,12 +84,19 @@ const get_tables = () => {
 const modify_page = (tables) => {
 
     GPA = null
+    gpa_class = null
 
     var gpah5Element = document.createElement('h5');
     var gpastrongElement = document.createElement('strong');
     gpastrongElement.id = 'gpa'
     gpastrongElement.textContent = `GPA : ${GPA}`;
     gpah5Element.appendChild(gpastrongElement)
+
+    var gpa_class_h5Element = document.createElement('h5');
+    var gpa_class_strongElement = document.createElement('strong');
+    gpa_class_strongElement.id = 'gpa_class'
+    gpa_class_strongElement.textContent = `Class : ${gpa_class}`;
+    gpa_class_h5Element.appendChild(gpa_class_strongElement)
 
 
     var primaryTag = document.getElementById('primary');
@@ -79,7 +105,9 @@ const modify_page = (tables) => {
     if (primaryTag) {
         if (primaryTag.children.length >= gpaInsertLocation) {
             primaryTag.insertBefore(gpah5Element, primaryTag.children[gpaInsertLocation]);
+            primaryTag.insertBefore(gpa_class_h5Element, primaryTag.children[gpaInsertLocation+1]);
             gpah5Element.className = primaryTag.children[gpaInsertLocation].className
+            gpa_class_h5Element.className = primaryTag.children[gpaInsertLocation].className
         } else {
             console.error("The div doesn't have enough children.");
         }
@@ -88,7 +116,7 @@ const modify_page = (tables) => {
     }
 
     if (tables.length > 2){
-        for(i = 2; i < tables.length; i++){
+        for(i = 0; i < tables.length; i++){
             rows = tables[i].querySelectorAll('tr')
             rows.forEach((row) => {
                 credit = row.innerText.split("\t")[3]
@@ -130,5 +158,7 @@ const check_if_correct_page = () =>{
         calculate_gpa()
     }
 }
+
+
 check_if_correct_page()
 

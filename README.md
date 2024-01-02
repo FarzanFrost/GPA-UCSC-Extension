@@ -1,4 +1,4 @@
-# GPA Calculator - UCSC version-2.1 - Release date : 01/01/2024
+# GPA Calculator - UCSC version-2.2 - Release date : 02/01/2024
 ![Project Logo](images/icon128.png)
 
 Calculates  your GPA at https://ucsc.cmb.ac.lk/exam_results/
@@ -10,7 +10,7 @@ Calculates  your GPA at https://ucsc.cmb.ac.lk/exam_results/
 - Step 2 : In Google Chrome go to Settings -> Extensions -> Manage Extensions (This step may be different if your browser is not Google Chrome)
 - Step 3 : Find extension and click reload icon of extension
 - Step 4 : visit https://ucsc.cmb.ac.lk/exam_results/ and login
-- Step 5 : Applicable only for 3rd, and 4th year students. Uncheck the checkbox if you want to exclude any optional subjects from being included in to the GPA.
+- Step 5 : Uncheck the checkbox if you want to exclude any optional or repeat subjects from being included in to the GPA.
 
 ## Steps to add this extension.
 - Step 1 : Clone this project into your laptop (E.g. inside folder x you will have the project as 'GPA-UCSC-Extension')
@@ -22,4 +22,4 @@ Calculates  your GPA at https://ucsc.cmb.ac.lk/exam_results/
 - Step 5 : Click on the project folder (from inside folder x select 'GPA-UCSC-Extension' folder)
 - Step 6 : Click 'Select Folder'
 - Step 7 : visit https://ucsc.cmb.ac.lk/exam_results/ and login.
-- Step 8 : Applicable only for 3rd, and 4th year students. Uncheck the checkbox if you want to exclude any optional subjects from being included in to the GPA.
+- Step 8 : Uncheck the checkbox if you want to exclude any optional or repeat subjects from being included in to the GPA.
