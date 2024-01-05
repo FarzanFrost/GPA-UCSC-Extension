@@ -1,4 +1,4 @@
-const return_result_gpa = (result) => {
+const get_gpv = (result) => {
     if (result === 'A' || result ==='A+') {
         return 4.00;
     } else if (result === 'A-') {
@@ -9,7 +9,7 @@ const return_result_gpa = (result) => {
         return 3.00;
     }else if (result === 'B-'){
         return 2.70;
-    }else if (result === 'C+'){
+    }else if (result === 'C+' || result === 'A+ : C+' || result === 'A : C+' || result === 'A- : C+' || result === 'B+ : C+' || result === 'B : C+' || result === 'B- : C+'  || result === 'C+ : C+'){
         return 2.30;
     }else if (result === 'C'){
         return 2.00;
@@ -34,7 +34,7 @@ const calculate_gpa = () => {
         let prod_credit_results = 0
         result_records.forEach((row) => {
             credit = parseInt(row.innerText.split("\t")[3])
-            result = return_result_gpa(row.innerText.split("\t")[4])
+            result = get_gpv(row.innerText.split("\t")[4])
             included_in_gpa = row.innerText.split("\t")[5]
             is_included_in_gpa = true
             if(!isNaN(included_in_gpa)){
@@ -115,39 +115,80 @@ const modify_page = (tables) => {
         alert(`GPA : ${GPA}`);
     }
 
-    if (tables.length > 2){
-        for(i = 0; i < tables.length; i++){
-            rows = tables[i].querySelectorAll('tr')
-            rows.forEach((row) => {
-                credit = row.innerText.split("\t")[3]
-                if (credit.toLowerCase() === 'credits'){
-                    th = row.querySelectorAll('th')[0]
-                    var checkboxCell = document.createElement('th');
-                    checkboxCell.className = th.className
-                    checkboxCell.textContent = 'Included in GPA'
-                    row.appendChild(checkboxCell);
-                }else{
-                    var checkboxDiv = document.createElement('div')
-                    checkboxDiv.className = "form-check form-switch"
-                    td = row.querySelectorAll('td')[0]
-                    var checkboxCell = document.createElement('td');
-                    checkboxCell.className = td.className
-                    var checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.checked = true;
-                    checkbox.addEventListener('change', function () {
-                        calculate_gpa()
-                    });
-                    checkbox.className = "form-check-input"
-                    checkboxDiv.appendChild(checkbox)
-                    checkboxCell.appendChild(checkboxDiv);
-                    row.appendChild(checkboxCell);
-            
-                }
-            });
-        }
+    repeat_subject_list = []
+
+    
+    for(i = 0; i < tables.length; i++){
+        rows = tables[i].querySelectorAll('tr')
+        rows.forEach((row) => {
+            credit = row.innerText.split("\t")[3]
+            if (credit.toLowerCase() === 'credits'){
+                th = row.querySelectorAll('th')[0]
+                var checkboxCell = document.createElement('th');
+                checkboxCell.className = th.className
+                checkboxCell.textContent = 'Included in GPA'
+                row.appendChild(checkboxCell);
+            }else{
+                var checkboxDiv = document.createElement('div')
+                checkboxDiv.className = "form-check form-switch"
+                td = row.querySelectorAll('td')[0]
+                var checkboxCell = document.createElement('td');
+                checkboxCell.className = td.className
+                var checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = true;
+                checkbox.addEventListener('change', function () {
+                    calculate_gpa()
+                });
+                checkbox.className = "form-check-input bg-danger border-danger"
+                checkboxDiv.appendChild(checkbox)
+                checkboxCell.appendChild(checkboxDiv);
+                row.appendChild(checkboxCell);
+        
+            }
+        });
     }
     
+}
+
+
+const handle_repeat_subjects = (tables) => {
+    for(i = 0; i < tables.length; i++){
+        rows = tables[i].querySelectorAll('tr')
+        for(j = 0; j < rows.length; j++){
+            row_j = rows[j]
+            row_j_innerText = row_j.innerText.split("\t")
+            subject_name_j = row_j_innerText[0].toLowerCase().trim()
+            subject_year_j = parseInt(row_j_innerText[1].toLowerCase().trim().slice(1, -1));
+            result_j = row_j_innerText[4]
+            if(row_j === 'subject') continue
+            for(k = j + 1; k < rows.length; k++){
+                row_k = rows[k]
+                row_k_innerText = row_k.innerText.split("\t")
+                subject_name_k = row_k_innerText[0].toLowerCase().trim()
+                    if (subject_name_j === subject_name_k) {
+                        subject_year_k = parseInt(row_k_innerText[1].toLowerCase().trim().slice(1, -1));
+                        result_k = row_k_innerText[4]
+                        if (subject_year_j < subject_year_k && get_gpv(result_j) <= get_gpv(result_k)) {
+                            included_in_gpa = row_j_innerText[5]
+                            if(!isNaN(included_in_gpa)){
+                                checkbox_j = row_j.querySelectorAll('input')
+                                checkbox_j[0].checked = false
+                                checkbox_j[0].disabled = true
+                            }
+                            row_k.querySelectorAll('td')[4].textContent = row_k.querySelectorAll('td')[4].textContent + ' : C+'
+                        }else {
+                            included_in_gpa = row_k_innerText[5]
+                            if(!isNaN(included_in_gpa)){
+                                checkbox_k = row_k.querySelectorAll('input')
+                                checkbox_k[0].checked = false
+                                checkbox_k[0].disabled = true
+                            }
+                        }
+                    }
+            }
+        }
+    }
 }
 
 
@@ -155,6 +196,7 @@ const check_if_correct_page = () =>{
     tables = get_tables()
     if (tables.length > 0){
         modify_page(tables)
+        handle_repeat_subjects(tables)
         calculate_gpa()
     }
 }

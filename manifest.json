@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "GPA Calculator - UCSC",
     "description": "Calculates your GPA.",
-    "version": "2.2",
+    "version": "2.5",
     "author": "M Farzan Rizwan",
     "icons": {
         "16": "images/icon16.png",
