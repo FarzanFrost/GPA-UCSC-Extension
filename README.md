@@ -1,19 +1,19 @@
 # GPA Calculator - UCSC version-2.5 - Release date : 06/01/2024
 ![Project Logo](images/icon128.png)
 
-Calculates  your GPA at https://ucsc.cmb.ac.lk/exam_results/
+Calculate your GPA at https://ucsc.cmb.ac.lk/exam_results/
 ## GPA Calculator - Features
 - Displays your GPA
 - Displays your Class, if you have one
 - Automatically handles repeat subjects
-- Ability for the user to deselect any optional subject to ommit it from being calculated with the GPA
+- Ability for the user to deselect any optional subject to omit it from being calculated with the GPA
 
 ## Steps to update the extension
 - Step 1 : Pull project code changes
     - ```bash
       git pull origin main
 - Step 2 : In Google Chrome go to Settings -> Extensions -> Manage Extensions (This step may be different if your browser is not Google Chrome)
-- Step 3 : Find extension and click reload icon of extension
+- Step 3 : Find the extension and click reload icon of the extension
 - Step 4 : visit https://ucsc.cmb.ac.lk/exam_results/ and login
 
 ## Steps to add this extension.
