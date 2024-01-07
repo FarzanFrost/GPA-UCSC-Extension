@@ -1,4 +1,4 @@
-# GPA Calculator - UCSC version-2.5 - Release date : 06/01/2024
+# GPA Calculator - UCSC version-2.6 - Release date : 07/01/2024
 ![Project Logo](images/icon128.png)
 
 Calculate your GPA at https://ucsc.cmb.ac.lk/exam_results/

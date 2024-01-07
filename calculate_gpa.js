@@ -169,15 +169,18 @@ const handle_repeat_subjects = (tables) => {
                     if (subject_name_j === subject_name_k) {
                         subject_year_k = parseInt(row_k_innerText[1].toLowerCase().trim().slice(1, -1));
                         result_k = row_k_innerText[4]
-                        if (subject_year_j < subject_year_k && get_gpv(result_j) <= get_gpv(result_k)) {
+                        if (subject_year_j < subject_year_k && get_gpv(result_j) <= get_gpv(result_k) ) {
                             included_in_gpa = row_j_innerText[5]
                             if(!isNaN(included_in_gpa)){
                                 checkbox_j = row_j.querySelectorAll('input')
                                 checkbox_j[0].checked = false
                                 checkbox_j[0].disabled = true
                             }
-                            row_k.querySelectorAll('td')[4].textContent = row_k.querySelectorAll('td')[4].textContent + ' : C+'
-                        }else {
+                            if (get_gpv('C+') <= get_gpv(result_k)){
+                                row_k.querySelectorAll('td')[4].textContent = row_k.querySelectorAll('td')[4].textContent + ' : C+'
+                            }
+                        }
+                        else {
                             included_in_gpa = row_k_innerText[5]
                             if(!isNaN(included_in_gpa)){
                                 checkbox_k = row_k.querySelectorAll('input')
