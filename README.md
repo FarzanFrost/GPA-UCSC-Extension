@@ -1,4 +1,4 @@
-# GPA Calculator - UCSC version-2.6 - Release date : 07/01/2024
+# GPA Calculator - UCSC version-3.0 - Release date : 03/02/2024
 ![Project Logo](images/icon128.png)
 
 Calculate your GPA at https://ucsc.cmb.ac.lk/exam_results/
@@ -6,7 +6,10 @@ Calculate your GPA at https://ucsc.cmb.ac.lk/exam_results/
 - Displays your GPA
 - Displays your Class, if you have one
 - Automatically handles repeat subjects
+- Automatically handles Medical subjects
 - Ability for the user to deselect any optional subject to omit it from being calculated with the GPA
+- Presents the GPA of each semester
+- Unable to handle situations when "EC - Exceptional Circumstances | NC - Not Completed | CN - Cancelled | WH - Withheld" exits
 
 ## Steps to update the extension
 - Step 1 : Pull project code changes
