@@ -1,4 +1,4 @@
-# GPA Calculator - UCSC version-3.0 - Release date : 03/02/2024
+# GPA Calculator - UCSC version-4.0 - Release date : 14/02/2024
 ![Project Logo](images/icon128.png)
 
 Calculate your GPA at https://ucsc.cmb.ac.lk/exam_results/
@@ -9,7 +9,8 @@ Calculate your GPA at https://ucsc.cmb.ac.lk/exam_results/
 - Automatically handles Medical subjects
 - Ability for the user to deselect any optional subject to omit it from being calculated with the GPA
 - Presents the GPA of each semester
-- Unable to handle situations when "EC - Exceptional Circumstances | NC - Not Completed | CN - Cancelled | WH - Withheld" exits
+- Able to extimate gpa for expected future results
+- Ignores courses with "EC - Exceptional Circumstances", "NC - Not Completed", "CN - Cancelled", "WH - Withheld"
 
 ## Steps to update the extension
 - Step 1 : Pull project code changes

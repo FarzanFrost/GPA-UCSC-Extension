@@ -1,4 +1,6 @@
 gpaTableId = 'gpaTable'
+let total_credits = 0
+let prod_credit_results = 0
 class Subject{
     constructor(credit, result, checkbox, year, semester){
         this.credit = credit
@@ -38,6 +40,56 @@ class Row{
         this.th = row.querySelectorAll('th')[0]
         this.td = row.querySelectorAll('td')[0]
     }
+}
+class ExtimateGPA{
+    constructor(inputString){
+        this.expectedGPA = document.getElementById('expectedGPA')
+        if(this.validateFormat(inputString)){
+            this.total_credits = total_credits
+            this.prod_credit_results = prod_credit_results
+            this.subjects = this.extractResults(inputString)
+            if(this.subjects.length>0){
+                this.estimategpa()
+                this.displayEstimatedgpa()
+            }
+        }else{
+            this.expectedGPA.innerHTML = 'Invalid Input!'
+        }
+    }
+    
+    validateFormat = (inputString) => {
+        var formatRegex = /^(\d+:[A-Z][+-]?,)*\d+:[A-Z][+-]?$/ ;
+        return formatRegex.test(inputString) ? true : false
+    }
+    extractResults = (inputString) => {
+        let subjects = []
+        const credit_results = inputString.split(',')
+        credit_results.forEach((credit_result) => {
+            credit_result = credit_result.split(':')
+            let credit = parseInt(credit_result[0])
+            let result = credit_result[1]
+            let subject = new Subject(credit, result, null, null, null)
+            subjects.push(subject)
+        })
+        return subjects
+    }
+
+    estimategpa = () => {
+        this.subjects.forEach((subject) => {
+            this.total_credits += subject.credit
+            this.prod_credit_results += subject.credit * get_gpv(subject.result)
+        })
+    }
+
+    displayEstimatedgpa = () => {
+        this.expectedGPA.innerHTML = 'Expected GPA : ' + (this.prod_credit_results / this.total_credits).toFixed(4)
+    }
+}
+
+
+const estimategpa = () => {
+    let inputString = document.getElementById('inputString').value;        
+    new ExtimateGPA(inputString)
 }
 
 
@@ -117,8 +169,6 @@ const calculate_gpa = (tables) => {
             prod_credit_results_map.set(key, parseInt(subject.credit)  * get_gpv(subject.result))
         }
     }
-    let total_credits = 0
-    let prod_credit_results = 0
     let gpaYearSemester = new Map()
 
     for(let [key, value] of total_credits_map.entries()){
@@ -189,12 +239,32 @@ const modify_page = (tables) => {
     var primaryTag = document.getElementById('primary');
     let gpaInsertLocation = 4
 
+    var estimateGPA = document.createElement('div')
+    estimateGPA.className = "container my-5 border border-dark p-3 font-weight-bold"
+    estimateGPA.innerHTML = `<div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2>Estimate GPA with Expected Results</h2>
+            <div id="expectedGPA"></div>
+            
+            <form id="expecedResultsForm">
+            <div class="mb-3">
+                <label for="numberInput" class="form-label">Enter expected results (credit:Result):</label>
+                <textarea class="form-control" style="background-color:#343a40;color:#ffffff;" id="inputString" rows="3">2:A,2:A,1:A,8:A</textarea>
+            </div>
+    
+            <button type="button" class="btn btn-dark" id="estimateGPAButton">Estimate</button>
+            </form>
+    
+        </div>
+        </div>`
+
     if (primaryTag) {
         if (primaryTag.children.length >= gpaInsertLocation) {
             primaryTag.insertBefore(gpah5Element, primaryTag.children[gpaInsertLocation]);
             primaryTag.insertBefore(gpa_class_h5Element, primaryTag.children[gpaInsertLocation+1]);
-            primaryTag.insertBefore(gpa_table_topic, primaryTag.children[gpaInsertLocation+2]);
-            primaryTag.insertBefore(gpa_table, primaryTag.children[gpaInsertLocation+3]);
+            primaryTag.insertBefore(estimateGPA, primaryTag.children[gpaInsertLocation+2]);
+            primaryTag.insertBefore(gpa_table_topic, primaryTag.children[gpaInsertLocation+3]);
+            primaryTag.insertBefore(gpa_table, primaryTag.children[gpaInsertLocation+4]);
             gpah5Element.className = primaryTag.children[gpaInsertLocation].className
             gpa_class_h5Element.className = primaryTag.children[gpaInsertLocation].className
         } else {
@@ -248,6 +318,10 @@ const check_if_correct_page = () =>{
     tables = get_tables()
     if (tables.length > 0){
         modify_page(tables)
+        let estimateGPAButton = document.getElementById('estimateGPAButton')
+        estimateGPAButton.onclick = (event)=>{
+            estimategpa()
+        }
         calculate_gpa(tables)
     }
 }
