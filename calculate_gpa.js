@@ -434,9 +434,18 @@ const check_if_correct_page = () => {
     if (tables.length > 0) {
         modify_page(tables)
         calculate_gpa(tables)
+        addChartContainer()
         injectChartJsCDNScript()
         // generateLineChart()
     }
+}
+
+const addChartContainer = () => {
+    // Add container for charts
+    const chartsDiv = document.createElement('div')
+    chartsDiv.id = 'chartsDiv'
+    gpaTableDiv = document.getElementById('gpaTableDiv')
+    gpaTableDiv.insertAdjacentElement('afterend',chartsDiv);
 }
 
 // Define the function to generate the line chart
@@ -469,9 +478,9 @@ const generateLineChart = () => {
     // Create canvas element to render the chart
     const canvas = document.createElement('canvas');
     canvas.setAttribute('id', 'lineChart');
-    gpaTableDiv = document.getElementById('gpaTableDiv')
-    gpaTableDiv.insertAdjacentElement('afterend',canvas);
-    // document.body.appendChild(canvas); // Append canvas to the body
+    chartsDiv = document.getElementById('chartsDiv')
+    
+    chartsDiv.appendChild(canvas); // Append canvas to the body
 
     // Create the line chart
     const ctx = document.getElementById('lineChart').getContext('2d');
