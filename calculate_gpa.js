@@ -268,7 +268,7 @@ const modify_page = (tables) => {
 
     var estimateGPA = document.createElement('div')
     estimateGPA.className = "container my-5 border border-dark p-3 font-weight-bold"
-
+    estimateGPA.id = "gpaTableDiv"
     estimateGPA.innerHTML = `<div class="row">
     <div class="col-md-6 offset-md-3">
         <h2>Estimate GPA with Expected Results</h2>
@@ -434,8 +434,66 @@ const check_if_correct_page = () => {
     if (tables.length > 0) {
         modify_page(tables)
         calculate_gpa(tables)
+        injectChartJsCDNScript()
+        // generateLineChart()
     }
 }
 
+// Define the function to generate the line chart
+const generateLineChart = () => {
+    // Get the table element
+    const table = document.getElementById('gpaTable');
 
+    // Extract data from the table
+    const data = {
+        labels: [], // Array to store labels (year-semester)
+        datasets: [{
+            label: 'GPA',
+            data: [], // Array to store GPA values
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
+
+    // Iterate through table rows and extract data
+    const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+    for (let row of rows) {
+        const cells = row.getElementsByTagName('td');
+        const yearSemester = 'Year ' + cells[0].innerText + '-' + "Sem " + cells[1].innerText; // Combine year and semester
+        const gpa = parseFloat(cells[2].innerText); // Extract GPA value as a float
+        data.labels.push(yearSemester);
+        data.datasets[0].data.push(gpa);
+    }
+
+    // Create canvas element to render the chart
+    const canvas = document.createElement('canvas');
+    canvas.setAttribute('id', 'lineChart');
+    gpaTableDiv = document.getElementById('gpaTableDiv')
+    gpaTableDiv.insertAdjacentElement('afterend',canvas);
+    // document.body.appendChild(canvas); // Append canvas to the body
+
+    // Create the line chart
+    const ctx = document.getElementById('lineChart').getContext('2d');
+    const lineChart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+};
+
+const injectChartJsCDNScript = () => {
+    var r = document.createElement('script');
+    r.setAttribute('src', 'chrome-extension://' + chrome.runtime.id + '/chart.min.js');
+    r.onload = generateLineChart;
+    r.type = "text/javascript";
+    (document.head || document.documentElement).appendChild(r);
+  };
+  
 check_if_correct_page()

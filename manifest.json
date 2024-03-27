@@ -1,31 +1,38 @@
 {
-    "manifest_version": 3,
-    "name": "GPA Calculator - UCSC",
-    "description": "Calculates your GPA.",
-    "version": "4.0",
-    "author": "M Farzan Rizwan",
-    "icons": {
-        "16": "images/icon16.png",
-        "32": "images/icon32.png",
-        "48": "images/icon48.png",
-        "128": "images/icon128.png"
-    },
-    "action": {
-        "default_icon": {
-            "16": "images/icon16.png",
-            "32": "images/icon32.png",
-            "48": "images/icon48.png",
-            "128": "images/icon128.png"
-        }
-      },
-    "content_scripts": [
-        {
-          "js": [
-            "calculate_gpa.js"
-          ],
-          "matches": [
-            "https://ucsc.cmb.ac.lk/exam_results/"
-          ]
-        }
+  "manifest_version": 3,
+  "name": "GPA Calculator - UCSC",
+  "description": "Calculates your GPA.",
+  "version": "4.0",
+  "author": "M Farzan Rizwan",
+  "icons": {
+    "16": "images/icon16.png",
+    "32": "images/icon32.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "images/icon16.png",
+      "32": "images/icon32.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["chart.min.js"],
+      "matches": ["*://*/*"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "js": [
+        "calculate_gpa.js",
+        "chart.min.js"
+      ],
+      "matches": [
+        "https://ucsc.cmb.ac.lk/exam_results/"
       ]
-  }
+    }
+  ]
+}
