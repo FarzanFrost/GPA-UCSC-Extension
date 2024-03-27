@@ -223,7 +223,12 @@ const modify_page = (tables) => {
         }
         .inputRow button {
             margin-left: 5px;
-        }`;
+        }
+
+        #estimateGPAButton{
+            width:100%;
+        }
+        `;
 
     // Create a style element
     const style = document.createElement('style');
@@ -271,19 +276,19 @@ const modify_page = (tables) => {
         
         <form id="expectedResultsForm">
             <div class="mb-3" id="inputContainer">
-                <label for="numberInput" class="form-label">Enter expected results (credit:Result):</label>
+                <label for="numberInput" class="form-label">Enter expected Subject credit & result (credit:Result):</label>
                 <div id="inputRows">
                     <div class="inputRow">
-                        <input type="text" id="creditValue" class="form-control creditInput" placeholder="Credit" />
+                        <input type="text" id="creditValue" class="form-control creditInput" placeholder="Subject Credit" />
                         <span style="margin: 0 5px;">:</span>
-                        <input type="text" id="gradeValue" class="form-control resultInput" placeholder="Result" />
-                        <button type="button" class="btn btn-success" id="addRow">Add Row</button>
+                        <input type="text" id="gradeValue" class="form-control resultInput" placeholder="Expected Result" />
+                        <button type="button" class="btn btn-success" id="addRow">Add Subject</button>
                     </div>
                 </div>
                 
             </div>
 
-            <button type="button" class="btn btn-dark" id="estimateGPAButton">Estimate</button>
+            <button type="button" class="btn btn-dark" id="estimateGPAButton">Estimate GPA</button>
         </form>
 
     </div>
@@ -353,11 +358,18 @@ const modify_page = (tables) => {
         newRow.classList.add('inputRow');
         newRow.classList.add('creditGradeRow');
         newRow.innerHTML = `
-        <input type="text" class="form-control creditInput" placeholder="Credit" value=${inputCredit} />
+        <input type="text" class="form-control creditInput" placeholder="Subject Credit" value=${inputCredit} />
         <span style="margin: 0 5px;">:</span>
-        <input type="text" class="form-control resultInput" placeholder="Result" value=${inputGrade} />
+        <input type="text" class="form-control resultInput" placeholder="Expected Result" value=${inputGrade} />
         <button type="button" class="btn btn-danger removeRow">Remove</button>
     `;
+        // Add a seperator if this is the first row
+        if (inputRows.childElementCount <= 1) {
+            const separator = document.createElement('hr');
+            separator.classList.add('separator');
+            // separator.textContent = '-------------------------------------';
+            inputRows.appendChild(separator);
+        }
         inputRows.appendChild(newRow);
 
         // Add event listener to the Remove button of the newly added row
