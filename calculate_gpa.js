@@ -355,6 +355,8 @@ const modify_page = (tables) => {
         const inputCredit = creditInputField.value
         const inputGrade = gradeInputField.value
 
+        if (!validateCredit(inputCredit) || !validateInputGrade(inputGrade)) { return }
+
         newRow.classList.add('inputRow');
         newRow.classList.add('creditGradeRow');
         newRow.innerHTML = `
@@ -402,6 +404,25 @@ const modify_page = (tables) => {
 
 }
 
+function validateInputGrade(inputGrade) {
+    if (!gradePointValue.has(inputGrade)) {
+        alert('Invalid grade! Grade must be one of: A+, A, A-, B+, B, B-, C+, C, C-, D+, D, E, F, CM, MC');
+        return false; // Return false to indicate validation failure
+    }
+    return true; // Return true to indicate validation success
+}
+
+function validateCredit(inputCredit) {
+    if (inputCredit === '' || isNaN(inputCredit)) {
+        alert('Credit Value must be a number!');
+        return false; // Return false to indicate validation failure
+    }
+    if (inputCredit < 0) {
+        alert('Credit Value cannot be less than 0!');
+        return false; // Return false to indicate validation failure
+    }
+    return true; // Return true to indicate validation success
+}
 
 const get_tables = () => {
     return Array.from(document.getElementsByTagName("table"))
