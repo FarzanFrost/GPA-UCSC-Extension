@@ -400,10 +400,6 @@ const check_if_correct_page = () => {
     tables = get_tables()
     if (tables.length > 0) {
         modify_page(tables)
-        let estimateGPAButton = document.getElementById('estimateGPAButton')
-        estimateGPAButton.onclick = (event) => {
-            estimategpa()
-        }
         calculate_gpa(tables)
     }
 }
